@@ -1,18 +1,25 @@
-import mongoose from "mongoose";
-import Orders from "../model/orders.model";
 import { Request, Response } from "express";
+import * as OrderService from "../service/user.service";
+import { orderValidation } from "../SchemaValidation/order.validation";
+import httpsStatus from "http-status-codes";
 
 
-export const createOrder = function(req:Request,res:Response){
+export const handleCreateOrder = function (req: Request, res: Response) {
 
-    const order = new Orders({
-        orderId: req.body.orderId,
-        customerId: req.body.customerId,
-        orderDate: req.body.orderDate,
-        status: req.body.status,
-        totalAmount: req.body.totalAmount,
-        items: req.body.items
-    })
+    const data = req.body;
 
+    const {error} = orderValidation.validate(data);
+
+    if (error) {
+        res.status(httpsStatus.BAD_REQUEST).send(error.details[0].message);
+        return;
+    }
+
+    const result: Promise<{ status: number, message: string }> = OrderService.createOrder(data);
+
+    result
+        .then((response) => {
+            res.status(response.status).json(response.message);
+        })
 }
 
