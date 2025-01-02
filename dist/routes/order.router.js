@@ -36,21 +36,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.handleCreateOrder = void 0;
-const OrderService = __importStar(require("../service/user.service"));
-const order_validation_1 = require("../SchemaValidation/order.validation");
-const http_status_codes_1 = __importDefault(require("http-status-codes"));
-const handleCreateOrder = function (req, res) {
-    const data = req.body;
-    const { error } = order_validation_1.orderValidation.validate(data);
-    if (error) {
-        res.status(http_status_codes_1.default.BAD_REQUEST).send(error.details[0].message);
-        return;
-    }
-    const result = OrderService.createOrder(data);
-    result
-        .then((response) => {
-        res.status(response.status).json(response.message);
-    });
-};
-exports.handleCreateOrder = handleCreateOrder;
+const express_1 = __importDefault(require("express"));
+const OrderController = __importStar(require("../controllers/order.controllers"));
+const router = express_1.default.Router();
+router.post("/create-order", OrderController.handleCreateOrder);
+exports.default = router;

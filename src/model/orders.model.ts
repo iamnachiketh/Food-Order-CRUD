@@ -1,6 +1,5 @@
 import mongoose, { Schema } from 'mongoose';
 
-
 interface Item {
     productId: string;
     quantity: number;
@@ -25,7 +24,7 @@ const OrderSchema = new Schema<IOrder>({
     orderDate: { type: Date, required: true },
     status: { type: String, required: true, default: "Pending" },
     totalAmount: { type: Number, required: true },
-    items: { type: Array<Item>(), required: true, default: [] }
+    items: { type: Array<Item>(),  default: [] }
 
 });
 

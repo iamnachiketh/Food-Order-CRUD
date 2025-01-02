@@ -40,6 +40,6 @@ const OrderSchema = new mongoose_1.Schema({
     orderDate: { type: Date, required: true },
     status: { type: String, required: true, default: "Pending" },
     totalAmount: { type: Number, required: true },
-    items: { type: Array(), required: true, default: [] }
+    items: { type: Array(), default: [] }
 });
 exports.default = mongoose_1.default.model("Order", OrderSchema);
