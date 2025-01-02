@@ -9,13 +9,13 @@ interface Item {
 }
 
 export const createOrder = async function (
-    data: { 
-        orderId: String; 
-        customerId: String; 
-        status: String; 
-        totalAmount: Number; 
-        items: Array<Item>; 
-    }):Promise<{status:number,message:string}> {
+    data: {
+        orderId: String;
+        customerId: String;
+        status: String;
+        totalAmount: Number;
+        items: Array<Item>;
+    }): Promise<{ status: number, message: string }> {
 
     const order = new Orders({
         orderId: data.orderId,
@@ -26,16 +26,35 @@ export const createOrder = async function (
         items: data.items
     })
 
-    try{
-        
+    try {
+
         let result = await order.save();
-        
+
         if (!result) {
             return { status: httpsStatus.BAD_REQUEST, message: "Order not created" }
         }
         return { status: httpsStatus.CREATED, message: "Order created successfully" }
-    }catch(err: any){
-        return { status: httpsStatus.INTERNAL_SERVER_ERROR, message: err.message}
+    } catch (err: any) {
+        return { status: httpsStatus.INTERNAL_SERVER_ERROR, message: err.message }
     }
 
+}
+
+
+export const getOrderById = async function (
+    id: string
+):Promise<{status:number,message?:string,data?:any}> {
+
+    try {
+
+        let orderDetails = await Orders.findById({ _id: id },{__v:0});
+        if (!orderDetails) {
+            return { status: httpsStatus.NOT_FOUND, message: "Order not found" }
+        }
+        
+        return { status: httpsStatus.OK, data: orderDetails }
+
+    } catch (error: any) {
+        return { status: httpsStatus.INTERNAL_SERVER_ERROR, message: error.message }
+    }
 }
