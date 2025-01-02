@@ -23,3 +23,20 @@ export const handleCreateOrder = function (req: Request, res: Response) {
         })
 }
 
+
+
+
+
+export const handleGetOrder = function(req:Request,res:Response){
+
+    const orderId = req.params.id;
+
+    const result:Promise<{status:number,message?:string,data?:any}> = OrderService.getOrderById(orderId);
+
+    result
+    .then((response)=>{
+        if(response.data === undefined) res.status(response.status).json(response.message);
+        else res.status(response.status).json(response.data);
+    })
+}
+

@@ -39,5 +39,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const OrderController = __importStar(require("../controllers/order.controllers"));
 const router = express_1.default.Router();
+router.get("/get-order/:id", OrderController.handleGetOrder);
 router.post("/create-order", OrderController.handleCreateOrder);
 exports.default = router;
