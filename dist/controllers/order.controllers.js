@@ -36,8 +36,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.handleGetOrder = exports.handleCreateOrder = void 0;
-const OrderService = __importStar(require("../service/user.service"));
+exports.handleUpdateOrderByUser = exports.handleGetOrder = exports.handleCreateOrder = void 0;
+const OrderService = __importStar(require("../service/order.service"));
 const order_validation_1 = require("../SchemaValidation/order.validation");
 const http_status_codes_1 = __importDefault(require("http-status-codes"));
 const handleCreateOrder = function (req, res) {
@@ -66,3 +66,16 @@ const handleGetOrder = function (req, res) {
     });
 };
 exports.handleGetOrder = handleGetOrder;
+const handleUpdateOrderByUser = function (req, res) {
+    const orderId = req.params.id;
+    const data = req.body;
+    const result = OrderService.updateOrderByUser(orderId, data);
+    result
+        .then((response) => {
+        if (response.data === undefined)
+            res.status(response.status).json(response.message);
+        else
+            res.status(response.status).json(response.data);
+    });
+};
+exports.handleUpdateOrderByUser = handleUpdateOrderByUser;
