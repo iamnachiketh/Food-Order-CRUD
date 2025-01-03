@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import * as OrderService from "../service/user.service";
+import * as OrderService from "../service/order.service";
 import { orderValidation } from "../SchemaValidation/order.validation";
 import httpsStatus from "http-status-codes";
 
@@ -38,5 +38,22 @@ export const handleGetOrder = function(req:Request,res:Response){
         if(response.data === undefined) res.status(response.status).json(response.message);
         else res.status(response.status).json(response.data);
     })
+}
+
+
+export const handleUpdateOrderByUser = function(req:Request,res:Response){
+
+    const orderId = req.params.id;
+
+    const data = req.body;
+
+    const result:Promise<{status:number,message?:string,data?:any}> = OrderService.updateOrderByUser(orderId,data);
+
+    result
+    .then((response)=>{
+        if(response.data === undefined) res.status(response.status).json(response.message);
+        else res.status(response.status).json(response.data);
+    })
+
 }
 

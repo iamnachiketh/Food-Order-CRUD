@@ -7,6 +7,8 @@ router.get("/get-order/:id", OrderController.handleGetOrder);
 
 router.post("/create-order", OrderController.handleCreateOrder);
 
+router.put("/update-order/:id",OrderController.handleUpdateOrderByUser);
+
 
 export default router;
 

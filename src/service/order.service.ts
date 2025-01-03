@@ -43,16 +43,40 @@ export const createOrder = async function (
 
 export const getOrderById = async function (
     id: string
-):Promise<{status:number,message?:string,data?:any}> {
+): Promise<{ status: number, message?: string, data?: any }> {
 
     try {
 
-        let orderDetails = await Orders.findById({ _id: id },{__v:0});
+        let orderDetails = await Orders.findById({ _id: id }, { __v: 0 });
         if (!orderDetails) {
             return { status: httpsStatus.NOT_FOUND, message: "Order not found" }
         }
-        
+
         return { status: httpsStatus.OK, data: orderDetails }
+
+    } catch (error: any) {
+        return { status: httpsStatus.INTERNAL_SERVER_ERROR, message: error.message }
+    }
+}
+
+
+export const updateOrderByUser = async function (id: string, data: any): Promise<{ status: number, message?: string, data?: any }> {
+    try {
+        let orderDetails = await Orders.findByIdAndUpdate({ _id: id, status: "Pending" }, {
+            $push: {
+                items: data.items !== undefined ? data.items : [],
+            },
+            $set: {
+                totalAmount: data.totalAmount !== undefined ? data.totalAmount : 0,
+            }
+        })
+
+        if (!orderDetails) {
+            return { status: httpsStatus.NOT_FOUND, message: "Order not found" }
+        }
+
+        return { status: httpsStatus.OK, data: orderDetails }
+
 
     } catch (error: any) {
         return { status: httpsStatus.INTERNAL_SERVER_ERROR, message: error.message }
