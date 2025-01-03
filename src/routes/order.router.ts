@@ -9,6 +9,8 @@ router.post("/create-order", OrderController.handleCreateOrder);
 
 router.put("/update-order/:id",OrderController.handleUpdateOrderByUser);
 
+router.delete("/delete-order/:id",OrderController.handleDeleteOrder);
+
 
 export default router;
 

@@ -57,3 +57,14 @@ export const handleUpdateOrderByUser = function(req:Request,res:Response){
 
 }
 
+
+export const handleDeleteOrder = function(req:Request,res:Response){
+
+    const orderId = req.params.id;
+
+    const result:Promise<{status:number,message:string}> = OrderService.deleteOrder(orderId);
+
+    result
+    .then((response)=>res.status(response.status).json(response.message));
+}
+
