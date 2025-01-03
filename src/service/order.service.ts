@@ -82,3 +82,20 @@ export const updateOrderByUser = async function (id: string, data: any): Promise
         return { status: httpsStatus.INTERNAL_SERVER_ERROR, message: error.message }
     }
 }
+
+
+export const deleteOrder = async function (id: string): Promise<{ status: number, message: string }> {
+
+    try {
+        let orderDetails = await Orders.findByIdAndDelete({ _id: id });
+        if (!orderDetails) {
+            return { status: httpsStatus.NOT_FOUND, message: "Order not found" }
+        }
+        return { status: httpsStatus.OK, message: "Order deleted successfully" };
+
+    }catch (error: any) {
+        return { status: httpsStatus.INTERNAL_SERVER_ERROR, message: error.message }
+    }
+}
+
+

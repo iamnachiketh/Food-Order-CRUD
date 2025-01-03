@@ -42,4 +42,5 @@ const router = express_1.default.Router();
 router.get("/get-order/:id", OrderController.handleGetOrder);
 router.post("/create-order", OrderController.handleCreateOrder);
 router.put("/update-order/:id", OrderController.handleUpdateOrderByUser);
+router.delete("/delete-order/:id", OrderController.handleDeleteOrder);
 exports.default = router;

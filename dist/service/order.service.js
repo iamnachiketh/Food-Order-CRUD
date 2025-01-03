@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateOrderByUser = exports.getOrderById = exports.createOrder = void 0;
+exports.deleteOrder = exports.updateOrderByUser = exports.getOrderById = exports.createOrder = void 0;
 const orders_model_1 = __importDefault(require("../model/orders.model"));
 const http_status_codes_1 = __importDefault(require("http-status-codes"));
 const createOrder = function (data) {
@@ -75,3 +75,18 @@ const updateOrderByUser = function (id, data) {
     });
 };
 exports.updateOrderByUser = updateOrderByUser;
+const deleteOrder = function (id) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            let orderDetails = yield orders_model_1.default.findByIdAndDelete({ _id: id });
+            if (!orderDetails) {
+                return { status: http_status_codes_1.default.NOT_FOUND, message: "Order not found" };
+            }
+            return { status: http_status_codes_1.default.OK, message: "Order deleted successfully" };
+        }
+        catch (error) {
+            return { status: http_status_codes_1.default.INTERNAL_SERVER_ERROR, message: error.message };
+        }
+    });
+};
+exports.deleteOrder = deleteOrder;
