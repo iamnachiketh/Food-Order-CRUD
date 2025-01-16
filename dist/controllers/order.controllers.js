@@ -40,16 +40,19 @@ exports.handleDeleteOrder = exports.handleUpdateOrderByUser = exports.handleGetO
 const OrderService = __importStar(require("../service/order.service"));
 const order_validation_1 = require("../SchemaValidation/order.validation");
 const http_status_codes_1 = __importDefault(require("http-status-codes"));
+const logger_uilt_1 = require("../utils/logger.uilt");
 const handleCreateOrder = function (req, res) {
     const data = req.body;
     const { error } = order_validation_1.orderValidation.validate(data);
     if (error) {
+        logger_uilt_1.logger.error(error.details[0].message);
         res.status(http_status_codes_1.default.BAD_REQUEST).send(error.details[0].message);
         return;
     }
     const result = OrderService.createOrder(data);
     result
         .then((response) => {
+        logger_uilt_1.logger.info(response.message);
         res.status(response.status).json(response.message);
     });
 };
@@ -59,10 +62,15 @@ const handleGetOrder = function (req, res) {
     const result = OrderService.getOrderById(orderId);
     result
         .then((response) => {
-        if (response.data === undefined)
+        if (response.data === undefined) {
+            logger_uilt_1.logger.error(response.message);
             res.status(response.status).json(response.message);
-        else
+        }
+        else {
+            logger_uilt_1.logger.info(response.data);
             res.status(response.status).json(response.data);
+        }
+        ;
     });
 };
 exports.handleGetOrder = handleGetOrder;
@@ -72,10 +80,15 @@ const handleUpdateOrderByUser = function (req, res) {
     const result = OrderService.updateOrderByUser(orderId, data);
     result
         .then((response) => {
-        if (response.data === undefined)
+        if (response.data === undefined) {
+            logger_uilt_1.logger.error(response.message);
             res.status(response.status).json(response.message);
-        else
+        }
+        else {
+            logger_uilt_1.logger.info(response.data);
             res.status(response.status).json(response.data);
+        }
+        ;
     });
 };
 exports.handleUpdateOrderByUser = handleUpdateOrderByUser;
@@ -83,6 +96,9 @@ const handleDeleteOrder = function (req, res) {
     const orderId = req.params.id;
     const result = OrderService.deleteOrder(orderId);
     result
-        .then((response) => res.status(response.status).json(response.message));
+        .then((response) => {
+        logger_uilt_1.logger.info(response.message);
+        res.status(response.status).json(response.message);
+    });
 };
 exports.handleDeleteOrder = handleDeleteOrder;
