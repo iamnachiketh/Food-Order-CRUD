@@ -1,9 +1,12 @@
 import mongoose from "mongoose";
+import { logger } from "../utils/logger.uilt";
 
-export const dbconnect = function(){
+export const dbconnect = function () {
+
+    logger.info("Connecting to the database....");
 
     mongoose.connect(process.env.MONGO_URI as string)
-    .then(()=>console.log("Connected to database"))
-    .catch((err:Error)=>console.log(err.message));
+        .then(() => logger.info("Connected to database"))
+        .catch((err: Error) => logger.error(err.message));
 
 }
